@@ -20,29 +20,8 @@
     <h1>INGRESE EL NOMBRE DEL ARTICULO QUE DESEA BUSCAR</h1>
 
 
-    <form action="/buscarn" method="POST">
 
-
-        <div class="form-group" style="margin: 1rem;">
-            <label>Nombre del articulo</label>
-            <input type="text" class="form-control" name="nombre">
-        </div>
-
-        <button type="submit" class="btn btn-primary" style="margin: 1rem;">Buscar</button>
-
-    </form>
-
-
-    <form action="/buscarc" method="POST">
-
-
-        <div class="form-group" style="margin: 1rem;">
-            <label>Codigo del articulo</label>
-            <input type="text" class="form-control" name="codigo">
-        </div>
-
-        <button type="submit" class="btn btn-primary" style="margin: 1rem;">Buscar</button>
-    </form>    
+        
 
 
 
@@ -54,7 +33,7 @@
                 <th scope="col">Codigo</th>
                 <th scope="col">Stock</th>
                 <th scope="col">Precio</th>
-                <th scope="col">Opciones</th>
+                <th scope="col">vender</th>
             </tr>
             </thead>
         <tbody>
@@ -65,17 +44,17 @@
                     <td>{{contacto.1}}</td>
                     <td>{{contacto.2}}</td>
                     <td>{{contacto.3}}</td>
-                    <td>
-                        <a href="/vender/{{contacto.1}}"><button type="button" class="btn btn-warning" >vender</button></a>
-
-                    </td>
-
+                    <td><a href="/vendido/{{contacto.2}}/{{contacto.1}}"><button type="submit" class="btn btn-primary" style="margin: 1rem;">vendido</button></a></td>
                 </tr>
             {%endfor%}
             
             
         </tbody>
     </table>
+
+    
+        
+   
 
 
 

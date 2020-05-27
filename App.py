@@ -14,8 +14,8 @@ mysql = MySQL(app)
 #iniciamos sesion(guarda datos en una memoria para luego usarlos)
 app.secret_key="mysecretkey"
 
-
 #en templates guardo todo lo que se ve
+
 
 @app.route("/")
 def index():
@@ -26,19 +26,20 @@ def index():
 def buscar():
     if request.method == "POST":
         
-        return render_template("buscar.html")
+        return render_template("buscar.html", code=0)
 
 
 
-@app.route("/buscarn", methods= ["POST"])
+@app.route("/buscarn", methods=["POST"])
 def busc():
-    if request.method == "POST":
-        nombre = request.form["nombre"]
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM PRODUCTOS WHERE PRODUCTO LIKE '"+nombre+" %' OR PRODUCTO LIKE '% "+nombre+" %' OR PRODUCTO LIKE '% "+nombre+"' ")
-        data = cur.fetchall()
-        print(data)
-        return render_template("buscar.html", contactos=data)
+    nombre = request.form["nombre"]
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM PRODUCTOS WHERE PRODUCTO LIKE '"+nombre+" %' OR PRODUCTO LIKE '% "+nombre+" %' OR PRODUCTO LIKE '% "+nombre+"' ")
+    data = cur.fetchall()
+    print(data)
+    return render_template("buscar.html", contactos=data)
+
+
 
 
 @app.route("/buscarc", methods= ["POST"])
@@ -50,6 +51,37 @@ def busccod():
         data = cur.fetchall()
         print(data)
         return render_template("buscar.html", contactos=data)
+
+
+
+@app.route("/vender/<codigo>")
+def vender(codigo):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM PRODUCTOS WHERE CODIGO like '" +codigo+ "'")
+    data = cur.fetchall()
+    return render_template("vender.html", contactos=data)
+
+
+
+@app.route("/vendido/<int:stock>/<string:codigo>")
+def vendido(stock,codigo):
+    print("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+    
+    stock = stock - 1
+    print(stock)
+    cur = mysql.connection.cursor() #me conecto con la BDD
+    cur.execute("""
+                    UPDATE PRODUCTOS
+                    SET CANTIDAD = %s
+                    WHERE CODIGO=%s
+        """,(stock,codigo)) #hago la consulta SQL
+    mysql.connection.commit() #guardo los cambios
+    return render_template("index.html")
+
+
+
+
+
 
 #def index():
 #    cur = mysql.connection.cursor()
