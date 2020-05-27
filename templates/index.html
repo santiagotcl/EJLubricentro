@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prueba flask</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+
+<body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+        <p>{{message}}</p>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+
+    <div style="display: flex; justify-content: center;">
+    <div style="width: 20%; height: 20%;">
+    <img src="/./static/coco.jpg" class="img-fluid" alt="Responsive image">
+    </div>
+    </div>
+
+
+
+    <div class="d-flex" style="flex-direction: column; height: 50%;">
+
+
+        <div style="display: flex; height: 50%;">
+
+        <form action="/buscar" method="POST" style="width: 50%; display: flex; justify-content: center; margin: 1rem;" >
+        
+
+            <button type="submit" class="btn btn-primary">Buscar Articulo</button>
+
+        
+        </form>
+        
+
+
+        <div action="/vender" method="POST" style="width: 50%;display: flex; justify-content: center; margin: 1rem;" >
+
+            <button type="submit" class="btn btn-primary">Vender</button>
+
+        </div>
+
+        </div>
+
+
+        <div action="/cliente" method="POST" style="display: flex; height: 50%;">
+
+        <div style="width: 50%; display: flex; justify-content: center; margin: 1rem;">
+            <button type="submit" class="btn btn-primary">Cliente</button>
+          
+
+        </div>
+
+
+        <div action="/presupuesto" method="POST" style="width: 50%;display: flex; justify-content: center; margin: 1rem;">
+
+            <button type="submit" class="btn btn-primary">Presupuesto</button>
+          
+
+        </div>
+
+        </div>
+
+
+      <div> 
+
+
+
+
+</body>
+</html>

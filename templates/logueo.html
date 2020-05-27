@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prueba flask</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+
+<body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+        <p>{{message}}</p>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+
+    <form action="/log" method="POST">
+        <div class="form-group" style="margin: 1rem;">
+            <label>Usuario</label>
+            <input type="text" class="form-control" name="usuario">
+        </div>
+        <div   class="form-group" style="margin: 1rem;">
+            <label>Contraseña</label>
+            <input ID="Password" type="Password" class="form-control" name="contraseña">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="margin: 1rem;">Ingresar</button>
+      </form>
+
+
+
+
+
+
+</body>
+</html>

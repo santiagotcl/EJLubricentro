@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prueba flask</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+
+<body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+        <p>{{message}}</p>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <h1>INGRESE EL NOMBRE DEL ARTICULO QUE DESEA BUSCAR</h1>
+
+
+    <form action="/buscarn" method="POST">
+
+
+        <div class="form-group" style="margin: 1rem;">
+            <label>Nombre del articulo</label>
+            <input type="text" class="form-control" name="nombre">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="margin: 1rem;">Buscar</button>
+    </form>
+
+
+    <form action="/buscarc" method="POST">
+
+
+        <div class="form-group" style="margin: 1rem;">
+            <label>Codigo del articulo</label>
+            <input type="text" class="form-control" name="codigo">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="margin: 1rem;">Buscar</button>
+    </form>    
+
+
+
+
+    <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Articulo</th>
+                <th scope="col">Codigo</th>
+                <th scope="col">Stock</th>
+                <th scope="col">Precio</th>
+            </tr>
+            </thead>
+        <tbody>
+                   
+            {% for contacto in contactos %}
+                <tr>
+                    <td>{{contacto.0}}</td>
+                    <td>{{contacto.1}}</td>
+                    <td>{{contacto.2}}</td>
+                    <td>{{contacto.3}}</td>
+                </tr>
+            {%endfor%}
+            
+            
+        </tbody>
+    </table>
+
+
+
+</body>
+</html>
