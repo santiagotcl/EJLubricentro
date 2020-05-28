@@ -16,6 +16,8 @@ app.secret_key="mysecretkey"
 
 #en templates guardo todo lo que se ve
 
+suma=[]#memoria interna de articulos seleccionados
+total=0#total en pesos de la compra
 
 @app.route("/")
 def index():
@@ -37,7 +39,7 @@ def busc():
     cur.execute("SELECT * FROM PRODUCTOS WHERE PRODUCTO LIKE '"+nombre+" %' OR PRODUCTO LIKE '% "+nombre+" %' OR PRODUCTO LIKE '% "+nombre+"' ")
     data = cur.fetchall()
     print(data)
-    return render_template("buscar.html", contactos=data)
+    return render_template("buscar.html", contactos=data, sumas=suma, total=total)
 
 
 
@@ -65,8 +67,6 @@ def vender(codigo):
 
 @app.route("/vendido/<int:stock>/<string:codigo>")
 def vendido(stock,codigo):
-    print("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-    
     stock = stock - 1
     print(stock)
     cur = mysql.connection.cursor() #me conecto con la BDD
@@ -79,9 +79,48 @@ def vendido(stock,codigo):
     return render_template("index.html")
 
 
+@app.route("/agregar/<string:codigo>")
+def agregar(codigo):
+    global total
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM PRODUCTOS WHERE CODIGO like '" +codigo+ "'")
+    data1 = cur.fetchall()
+    suma.append(data1[0])
+    temp=data1[0]
+    total = total + temp[3]
+    return render_template("buscar.html", sumas=suma, total=total)
 
 
+@app.route("/eliminar/<string:codigo>")
+def eliminar(codigo):
+    global total
+    for sum in suma:
+        if (sum[1] == codigo):
+            total=total-sum[3]
+            suma.remove(sum)
+    return render_template("buscar.html", sumas=suma, total=total)
 
+@app.route("/venta")
+def venta():
+    global total
+    for sum in suma:
+        stock=sum[2]
+        codigo=sum[1]
+        stock = stock - 1
+        cur = mysql.connection.cursor() #me conecto con la BDD
+        cur.execute("""
+                     UPDATE PRODUCTOS
+                     SET CANTIDAD = %s
+                      WHERE CODIGO=%s
+            """,(stock,codigo)) #hago la consulta SQL
+        mysql.connection.commit() #guardo los cambios
+    total=0
+    for sum in suma:
+        suma.pop()
+    suma.pop()
+    print(suma)
+    flash("VENTA REALIZADA!") #envia mesajes entre vistas
+    return redirect(url_for("index"))
 
 #def index():
 #    cur = mysql.connection.cursor()

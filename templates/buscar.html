@@ -16,6 +16,45 @@
     {% endif %}
     {% endwith %}
   
+    <h1>USTED VA SELECCIONANDO</h1>
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Articulo</th>
+            <th scope="col">Codigo</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Opciones</th>
+            <th scope="col">Suma</th>
+        </tr>
+        </thead>
+    <tbody>
+               
+        {% for sum in sumas %}
+            <tr>
+                <td>{{sum.0}}</td>
+                <td>{{sum.1}}</td>
+                <td>{{sum.2}}</td>
+                <td>{{sum.3}}</td>
+                <td>
+                    <a href="/eliminar/{{sum.1}}"><button type="button" class="btn btn-warning" >Eliminar</button></a>
+                </td> 
+
+            
+        {% endfor %}
+                <td>{{total}}</td>
+            </tr>
+        
+    </tbody>
+
+
+
+</table>
+
+
+<a href="/venta"><button type="button" class="btn btn-warning" >Vendido!</button></a>
 
     <h1>INGRESE EL NOMBRE DEL ARTICULO QUE DESEA BUSCAR</h1>
 
@@ -67,7 +106,7 @@
                     <td>{{contacto.3}}</td>
                     <td>
                         <a href="/vender/{{contacto.1}}"><button type="button" class="btn btn-warning" >vender</button></a>
-
+                        <a href="/agregar/{{contacto.1}}"><button type="button" class="btn btn-warning" >Agregar</button></a>
                     </td>
 
                 </tr>
