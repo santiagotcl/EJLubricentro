@@ -121,7 +121,9 @@ def venta():
     fecha = now.strftime('%d-%m-%Y')
     hora = now.strftime("%H:%M")
     i=0
-    if(i<=k):
+    while(i < k):
+        print("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        print(i)
         temp=list(suma[i])
         temp1=float(temp[4])*float(temp[3])
         cur = mysql.connection.cursor() #me conecto con la BDD
