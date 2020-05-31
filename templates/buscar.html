@@ -24,22 +24,39 @@
         <tr>
             <th scope="col">Articulo</th>
             <th scope="col">Codigo</th>
-            <th scope="col">Stock</th>
+            <th scope="col">Cantidad</th>
             <th scope="col">Precio</th>
             <th scope="col">Opciones</th>
             <th scope="col">Suma</th>
         </tr>
         </thead>
     <tbody>
-               
+        {% set i=0 %}      
         {% for sum in sumas %}
+        
             <tr>
                 <td>{{sum.0}}</td>
                 <td>{{sum.1}}</td>
-                <td>{{sum.2}}</td>
+
+
+
+
+                <td>
+                    <form action="/aumentar/{{sum.3}}/{{i}}" method="POST" class="input-group mb-2">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">{{sum.4}}</span>
+                        </div>
+                        <input type="number" class="form-control" style="width: 0.5rem;" name="aumentar2">
+                        <button type="submit" class="btn btn-dark" >Aumentar</button>
+                    </form>               
+                </td>
+
+            {% set i=i+1 %}
+
+
                 <td>{{sum.3}}</td>
                 <td>
-                    <a href="/eliminar/{{sum.1}}"><button type="button" class="btn btn-warning" >Eliminar</button></a>
+                    <a href="/eliminar/{{sum.1}}"><button type="button" class="btn btn-danger" >Eliminar</button></a>
                 </td> 
 
             
@@ -105,7 +122,6 @@
                     <td>{{contacto.2}}</td>
                     <td>{{contacto.3}}</td>
                     <td>
-                        <a href="/vender/{{contacto.1}}"><button type="button" class="btn btn-warning" >vender</button></a>
                         <a href="/agregar/{{contacto.1}}"><button type="button" class="btn btn-warning" >Agregar</button></a>
                     </td>
 

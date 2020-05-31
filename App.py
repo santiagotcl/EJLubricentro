@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect, flash
 from flask_mysqldb import MySQL
+from datetime import datetime
 
 app=Flask(__name__)
 
@@ -17,7 +18,7 @@ app.secret_key="mysecretkey"
 #en templates guardo todo lo que se ve
 
 suma=[]#memoria interna de articulos seleccionados
-total=0#total en pesos de la compra
+total=0.0#total en pesos de la compra
 
 @app.route("/")
 def index():
@@ -37,8 +38,7 @@ def busc():
     nombre = request.form["nombre"]
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM PRODUCTOS WHERE PRODUCTO LIKE '"+nombre+" %' OR PRODUCTO LIKE '% "+nombre+" %' OR PRODUCTO LIKE '% "+nombre+"' ")
-    data = cur.fetchall()
-    print(data)
+    data = cur.fetchall()#resultado de la busqueda en la base de datos
     return render_template("buscar.html", contactos=data, sumas=suma, total=total)
 
 
@@ -51,17 +51,7 @@ def busccod():
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM PRODUCTOS WHERE CODIGO like '" +codigo+ "'")
         data = cur.fetchall()
-        print(data)
         return render_template("buscar.html", contactos=data)
-
-
-
-@app.route("/vender/<codigo>")
-def vender(codigo):
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM PRODUCTOS WHERE CODIGO like '" +codigo+ "'")
-    data = cur.fetchall()
-    return render_template("vender.html", contactos=data)
 
 
 
@@ -85,8 +75,11 @@ def agregar(codigo):
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM PRODUCTOS WHERE CODIGO like '" +codigo+ "'")
     data1 = cur.fetchall()
-    suma.append(data1[0])
     temp=data1[0]
+    temp1=list(temp)
+    temp1.append(1)
+    temp=tuple(temp1)
+    suma.append(temp)
     total = total + temp[3]
     return render_template("buscar.html", sumas=suma, total=total)
 
@@ -102,11 +95,12 @@ def eliminar(codigo):
 
 @app.route("/venta")
 def venta():
+    
     global total
     for sum in suma:
         stock=sum[2]
         codigo=sum[1]
-        stock = stock - 1
+        stock = stock - int(sum[4])
         cur = mysql.connection.cursor() #me conecto con la BDD
         cur.execute("""
                      UPDATE PRODUCTOS
@@ -115,12 +109,76 @@ def venta():
             """,(stock,codigo)) #hago la consulta SQL
         mysql.connection.commit() #guardo los cambios
     total=0
+
+
+
+
+    ##########################################################################
+    ######################AGREGO VENTA A REGISTRO DE VENTAS###################
+    ##########################################################################
+    k=len(suma)
+    now = datetime.now()
+    fecha = now.strftime('%d-%m-%Y')
+    hora = now.strftime("%H:%M")
+    i=0
+    if(i<=k):
+        temp=list(suma[i])
+        temp1=float(temp[4])*float(temp[3])
+        cur = mysql.connection.cursor() #me conecto con la BDD
+        cur.execute("INSERT INTO ventas (PRODUCTO,CODIGO,CANTIDAD,PRECIO,HORA,FECHA) VALUES (%s, %s, %s,%s,%s,%s)", 
+        (temp[0], temp[1], temp[4],temp1,hora,fecha)) #hago la consulta SQL
+        mysql.connection.commit() #guardo los cambios
+        i=i+1
+
+
+    #eliminio lista parcial perro!!!!!!!
     for sum in suma:
         suma.pop()
-    suma.pop()
-    print(suma)
+    if(len(suma) >= 1):
+        suma.pop() #el for no me borra el primer elemento (itera desde 1)
+
+
     flash("VENTA REALIZADA!") #envia mesajes entre vistas
     return redirect(url_for("index"))
+
+
+@app.route("/aumentar/<precio>/<i>", methods=["POST"])
+def aumentar(precio,i):
+    global total
+    cantidad = request.form["aumentar2"]
+    print(cantidad)
+    print("esta es la cantidad")
+    #multiplico cantidad vieja por precio y resto al total
+    temp=suma[int(i)]
+    temp1=list(temp)
+    precioparcial=float(temp1[4])*float(precio)
+    total=total-precioparcial
+    #multiplico cantidad nueva por precio y sumo al total
+    tem=int(cantidad)
+    tem2=float(tem)*float(precio)
+    total=total + tem2
+    #modifico cantidad en suma parcial para mostrar
+
+    temp1[4]=cantidad
+    suma[int(i)]=tuple(temp1)
+
+
+    return render_template("buscar.html", sumas=suma, total=total)
+
+
+@app.route("/ventas", methods=["POST"])
+def Ventas():
+    if request.method == "POST":
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM ventas")
+        data = cur.fetchall()#resultado de la busqueda en la base de datos
+        return render_template("ventas.html", contactos=data)
+
+
+
+
+
+
 
 #def index():
 #    cur = mysql.connection.cursor()

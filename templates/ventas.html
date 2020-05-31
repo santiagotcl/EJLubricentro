@@ -17,7 +17,7 @@
     {% endwith %}
   
 
-    <h1>INGRESE EL NOMBRE DEL ARTICULO QUE DESEA BUSCAR</h1>
+    <h1>ARTICULOS VENDIDOS</h1>
 
 
 
@@ -31,28 +31,35 @@
             <tr>
                 <th scope="col">Articulo</th>
                 <th scope="col">Codigo</th>
-                <th scope="col">Stock</th>
+                <th scope="col">Cantidad</th>
                 <th scope="col">Precio</th>
-                <th scope="col">vender</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Fecha</th>
             </tr>
             </thead>
         <tbody>
                    
             {% for contacto in contactos %}
                 <tr>
-                    <td>{{contacto.0}}</td>
                     <td>{{contacto.1}}</td>
                     <td>{{contacto.2}}</td>
                     <td>{{contacto.3}}</td>
-                    <td><a href="/vendido/{{contacto.2}}/{{contacto.1}}"><button type="submit" class="btn btn-primary" style="margin: 1rem;">vendido</button></a></td>
+                    <td>{{contacto.4}}</td>
+                    <td>{{contacto.5}}</td>
+                    <td>{{contacto.6}}</td>
+                    
                 </tr>
             {%endfor%}
             
+
+         
             
         </tbody>
     </table>
 
-    
+
+
+    <a href="/"><button type="button" class="btn btn-primary" >Volver!</button></a>
         
    
 
