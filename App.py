@@ -148,24 +148,23 @@ def venta():
 def aumentar(precio,i):
     global total
     cantidad = request.form["aumentar2"]
-    print(cantidad)
-    print("esta es la cantidad")
-    #multiplico cantidad vieja por precio y resto al total
     temp=suma[int(i)]
     temp1=list(temp)
-    precioparcial=float(temp1[4])*float(precio)
-    total=total-precioparcial
-    #multiplico cantidad nueva por precio y sumo al total
-    tem=int(cantidad)
-    tem2=float(tem)*float(precio)
-    total=total + tem2
-    #modifico cantidad en suma parcial para mostrar
-
-    temp1[4]=cantidad
-    suma[int(i)]=tuple(temp1)
-
-
-    return render_template("buscar.html", sumas=suma, total=total)
+    if(int(cantidad) > int(temp1[2])):
+        flash("NO HAY SUFICIENTE STOCK!!!") #envia mesajes entre vistas
+        return render_template("buscar.html", sumas=suma, total=total)
+    else:
+        #multiplico cantidad vieja por precio y resto al total
+        precioparcial=float(temp1[4])*float(precio)
+        total=total-precioparcial
+        #multiplico cantidad nueva por precio y sumo al total
+        tem=int(cantidad)
+        tem2=float(tem)*float(precio)
+        total=total + tem2
+        #modifico cantidad en suma parcial para mostrar
+        temp1[4]=cantidad
+        suma[int(i)]=tuple(temp1)
+        return render_template("buscar.html", sumas=suma, total=total)
 
 
 @app.route("/ventas", methods=["POST"])
