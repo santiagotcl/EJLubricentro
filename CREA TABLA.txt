@@ -1,0 +1,11 @@
+CREATE TABLE ventas
+   (
+      ID int AUTO_INCREMENT,
+      PRODUCTO varchar(255),
+      CODIGO varchar(255),
+      CANTIDAD int,
+      PRECIO FLOAT,
+      HORA varchar(255),
+      FECHA varchar(255),
+      PRIMARY KEY (ID)
+   )

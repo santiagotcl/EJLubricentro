@@ -122,8 +122,6 @@ def venta():
     hora = now.strftime("%H:%M")
     i=0
     while(i < k):
-        print("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-        print(i)
         temp=list(suma[i])
         temp1=float(temp[4])*float(temp[3])
         cur = mysql.connection.cursor() #me conecto con la BDD
@@ -175,7 +173,29 @@ def Ventas():
         data = cur.fetchall()#resultado de la busqueda en la base de datos
         return render_template("ventas.html", contactos=data)
 
+@app.route("/devolver/<id>")#disulve ventas realizadas y vuelve a sumar stock en caso de error
+def devolver(id):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM ventas WHERE ID = "+id+"")#saco cantidad y codigo del articulo
+    data = cur.fetchall()
+    data1=list(data[0])
+    cur.execute("""SELECT * FROM PRODUCTOS WHERE CODIGO=%s""",(data1[2],)) #saco stock actual para sumar el que se debe reintegrar
+    data = cur.fetchall()
+    data=list(data[0])
+    stock=int(data[2])+int(data1[3])
+    cur.execute("""
+                     UPDATE PRODUCTOS
+                     SET CANTIDAD = %s
+                      WHERE CODIGO=%s
+            """,(stock,data1[2])) #hago la consulta SQL
 
+    cur.execute("DELETE FROM ventas WHERE ID = "+id+"")
+    mysql.connection.commit() #guardo los cambios
+    cur.execute("SELECT * FROM ventas")
+    data = cur.fetchall()#resultado de la busqueda en la base de datos
+    flash("ARTICULO REINCORPORADO!!!")
+    return render_template("ventas.html", contactos=data)
+    
 
 
 
