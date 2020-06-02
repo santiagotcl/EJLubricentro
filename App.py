@@ -252,6 +252,13 @@ def buscla():
     return render_template("clientes.html", contactos=data)
 
 
+@app.route("/elimclient/<string:id>")#recibo un parametro tipo string
+def elimclient(id):
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM CLIENTES WHERE id = %s", (id,))
+    mysql.connection.commit() #guardo los cambios
+    flash("cliente eliminado satifactoriamente") #envia mesajes entre vistas
+    return redirect(url_for("index"))
 
 
 #def index():
