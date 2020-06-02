@@ -1,0 +1,9 @@
+id
+nombre
+apellido
+telefono
+patente
+fecha
+hora
+kilometros
+auto

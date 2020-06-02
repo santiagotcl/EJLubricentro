@@ -197,6 +197,59 @@ def devolver(id):
     return render_template("ventas.html", contactos=data)
     
 
+@app.route("/a_clientes", methods=["POST"])
+def a_clientes():
+    return render_template("clientes.html")
+
+
+@app.route("/add_client", methods=["POST"])
+def add_client():
+    if request.method == "POST":
+        nombre = request.form["nombre"]
+        apellido = request.form["apellido"]
+        telefono = request.form["telefono"]
+        patente = request.form["patente"]
+        kilometros = request.form["kilometros"]
+        auto=request.form["auto"]
+
+        now = datetime.now()
+        fecha = now.strftime('%d-%m-%Y')
+        hora = now.strftime("%H:%M")
+        print(int(telefono))
+        cur = mysql.connection.cursor() #me conecto con la BDD
+        cur.execute("INSERT INTO clientes (NOMBRE,APELLIDO,TELEFONO,PATENTE,HORA,FECHA,KILOMETROS,AUTO) VALUES (%s, %s, %s,%s, %s, %s,%s, %s)", 
+        (nombre, apellido, int(telefono), patente, hora, fecha, kilometros, auto)) #hago la consulta SQL
+        mysql.connection.commit() #guardo los cambios
+        flash("cliente agregado satifactoriamente") #envia mesajes entre vistas
+        return redirect(url_for("index")) #hago que se vuelva a cargar index.html al agregar un contacto
+
+
+@app.route("/buscln", methods=["POST"])
+def buscln():
+    nombre = request.form["nombre"]
+    print(nombre)
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM CLIENTES WHERE NOMBRE = %s", (nombre,))
+    data = cur.fetchall()#resultado de la busqueda en la base de datos
+    return render_template("clientes.html", contactos=data)
+
+
+@app.route("/busclp", methods=["POST"])
+def busclp():
+    patente = request.form["codigo"]
+    print(patente)
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM CLIENTES WHERE PATENTE = %s", (patente,))
+    data = cur.fetchall()#resultado de la busqueda en la base de datos
+    return render_template("clientes.html", contactos=data)
+
+@app.route("/buscla", methods=["POST"])
+def buscla():
+    auto = request.form["codigo"]
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM CLIENTES WHERE AUTO = %s", (auto,))
+    data = cur.fetchall()#resultado de la busqueda en la base de datos
+    return render_template("clientes.html", contactos=data)
 
 
 
@@ -264,6 +317,8 @@ def act(id):
         mysql.connection.commit() #guardo los cambios
         flash("contacto modificado satifactoriamente") #envia mesajes entre vistas
         return redirect(url_for("index")) #hago que se vuelva a cargar index.html al agregar un contacto
+
+
 
 
     

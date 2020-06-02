@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prueba flask</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+
+<body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+        <p>{{message}}</p>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+
+    <form action="/add_client" method="POST">
+
+        <div class="form-group" style="margin: 1rem;">
+            <label>Nombre</label>
+            <input type="text" class="form-control" name="nombre">
+        </div>
+
+        <div class="form-group" style="margin: 1rem;">
+            <label>Apellido</label>
+            <input type="text" class="form-control" name="apellido">
+        </div>
+
+        <div class="form-group" style="margin: 1rem;">
+            <label>Telefono</label>
+            <input type="text" class="form-control" name="telefono">
+        </div>
+
+        <div class="form-group" style="margin: 1rem;">
+            <label>Patente</label>
+            <input type="text" class="form-control" name="patente">
+        </div>
+
+        <div class="form-group" style="margin: 1rem;">
+            <label>Kilometros</label>
+            <input type="number" class="form-control" name="kilometros">
+        </div>
+
+        <div class="form-group" style="margin: 1rem;">
+            <label>Auto</label>
+            <input type="text" class="form-control" name="auto">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="margin: 1rem;">Registrar Cliente</button>
+      </form>
+
+
+      <h1>Busqueda de un cliente</h1>
+
+
+      <form action="/buscln" method="POST">
+  
+  
+          <div class="form-group" style="margin: 1rem;">
+              <label>Nombre del Cliene</label>
+              <input type="text" class="form-control" name="nombre">
+          </div>
+  
+          <button type="submit" class="btn btn-primary" style="margin: 1rem;">Buscar</button>
+  
+      </form>
+  
+  
+      <form action="/busclp" method="POST">
+  
+  
+          <div class="form-group" style="margin: 1rem;">
+              <label>Patente</label>
+              <input type="text" class="form-control" name="codigo">
+          </div>
+  
+          <button type="submit" class="btn btn-primary" style="margin: 1rem;">Buscar</button>
+      </form>    
+
+
+      <form action="/buscla" method="POST">
+  
+  
+        <div class="form-group" style="margin: 1rem;">
+            <label>Auto</label>
+            <input type="text" class="form-control" name="codigo">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="margin: 1rem;">Buscar</button>
+    </form>    
+
+
+      <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Telefono</th>
+            <th scope="col">Patente</th>
+            <th scope="col">kilometros</th>
+            <th scope="col">Auto</th>
+        </tr>
+        </thead>
+    <tbody>
+
+        {% for contacto in contactos %}
+            <tr>
+                <td>{{contacto.1}}</td>
+                <td>{{contacto.2}}</td>
+                <td>{{contacto.3}}</td>
+                <td>{{contacto.4}}</td>
+                <td>{{contacto.7}}</td>
+                <td>{{contacto.8}}</td>
+                <td>
+                    <a href="/devolver/{{contacto.0}}"><button type="button" class="btn btn-danger" >eliminar cliente</button></a>
+                </td> 
+            </tr>
+        {%endfor%}
+        
+
+     
+        
+    </tbody>
+</table>
+
+
+
+</body>
+</html>
