@@ -260,6 +260,68 @@ def elimclient(id):
     flash("cliente eliminado satifactoriamente") #envia mesajes entre vistas
     return redirect(url_for("index"))
 
+@app.route("/a_stock", methods=["POST"])
+def a_stock():
+    return render_template("stock.html")
+
+
+@app.route("/buscarns", methods=["POST"])
+def buscs():
+    nombre = request.form["nombre"]
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM PRODUCTOS WHERE PRODUCTO LIKE '"+nombre+" %' OR PRODUCTO LIKE '% "+nombre+" %' OR PRODUCTO LIKE '% "+nombre+"' ")
+    data = cur.fetchall()#resultado de la busqueda en la base de datos
+    return render_template("stock.html", contactos=data)
+
+
+
+
+@app.route("/buscarcs", methods= ["POST"])
+def busccods():
+    if request.method == "POST":
+        codigo = request.form["codigo"]
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM PRODUCTOS WHERE CODIGO like '" +codigo+ "'")
+        data = cur.fetchall()
+        return render_template("stock.html", contactos=data)
+
+
+
+
+@app.route("/masstock/<codigo>", methods=["POST"])
+def aumentars(codigo):
+    aumstock = request.form["aumstock"]
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM PRODUCTOS WHERE CODIGO like '" +codigo+ "'")
+    data = cur.fetchall()
+    data=list(data[0])
+    stock_nuevo=int(data[2])+int(aumstock)
+    cur.execute("""
+                    UPDATE PRODUCTOS
+                    SET CANTIDAD = %s
+                    WHERE CODIGO=%s
+        """,(stock_nuevo, codigo,)) #hago la consulta SQL
+    mysql.connection.commit() #guardo los cambios
+    flash("STOCK MODIFICADO!!!!!!") #envia mesajes entre vistas
+    return render_template("stock.html")
+
+
+
+
+@app.route("/camprecio/<codigo>", methods=["POST"])
+def camprecio(codigo):
+    price = request.form["price"]
+    cur = mysql.connection.cursor()
+    cur.execute("""
+                    UPDATE PRODUCTOS
+                    SET PRECIO = %s
+                    WHERE CODIGO=%s
+        """,(float(price), codigo,)) #hago la consulta SQL
+    mysql.connection.commit() #guardo los cambios
+    flash("PRECIO MODIFICADO!!!!!!") #envia mesajes entre vistas
+    return render_template("stock.html")
+
+
 
 #def index():
 #    cur = mysql.connection.cursor()

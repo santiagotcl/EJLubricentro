@@ -59,37 +59,33 @@
       <form action="/buscln" method="POST">
   
   
-          <div class="form-group" style="margin: 1rem;">
-              <label>Nombre del Cliene</label>
-              <input type="text" class="form-control" name="nombre">
-          </div>
-  
-          <button type="submit" class="btn btn-primary" style="margin: 1rem;">Buscar</button>
-  
+          <div class="form-group" style="margin: 1rem; display:flex; justify-content: space-between;">
+              <label style="margin-right: 0.5rem;">Nombre del Cliene</label>
+              <input type="text" class="form-control" name="nombre" style="width: 80%;">
+              <button type="submit" class="btn btn-primary" style="margin-left: 0.5rem;">Buscar</button>
+        </div>
       </form>
   
   
       <form action="/busclp" method="POST">
   
   
-          <div class="form-group" style="margin: 1rem;">
-              <label>Patente</label>
+          <div class="form-group" style="margin: 1rem; display:flex; justify-content: space-between;">
+              <label style="margin-right: 0.5rem;">Patente</label>
               <input type="text" class="form-control" name="codigo">
-          </div>
-  
-          <button type="submit" class="btn btn-primary" style="margin: 1rem;">Buscar</button>
+              <button type="submit" class="btn btn-primary" style="margin-left: 0.5rem;">Buscar</button>
+        </div>
       </form>    
 
 
       <form action="/buscla" method="POST">
   
   
-        <div class="form-group" style="margin: 1rem;">
-            <label>Auto</label>
+        <div class="form-group" style="margin: 1rem; display:flex; justify-content: space-between;">
+            <label style="margin-right: 0.5rem;">Auto</label>
             <input type="text" class="form-control" name="codigo">
+            <button type="submit" class="btn btn-primary" style="margin-left: 0.5rem;">Buscar</button>
         </div>
-
-        <button type="submit" class="btn btn-primary" style="margin: 1rem;">Buscar</button>
     </form>    
 
 
@@ -126,7 +122,7 @@
     </tbody>
 </table>
 
-
+<a href="/"><button type="button" class="btn btn-primary" >Volver!</button></a>
 
 </body>
 </html>
