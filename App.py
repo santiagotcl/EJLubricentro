@@ -90,7 +90,7 @@ def eliminar(codigo):
     global total
     for sum in suma:
         if (sum[1] == codigo):
-            total=total-sum[3]
+            total=total-(float(sum[3])*float(sum[4]))
             suma.remove(sum)
     return render_template("buscar.html", sumas=suma, total=total)
 
