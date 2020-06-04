@@ -31,7 +31,9 @@ def buscar():
         
         return render_template("buscar.html", code=0)
 
-
+##########################################################################
+############BUSQUEDA POR NOMBRE Y CODIGO PARPANTALLA BUSCAR###############
+##########################################################################
 
 @app.route("/buscarn", methods=["POST"])
 def busc():
@@ -40,7 +42,6 @@ def busc():
     cur.execute("SELECT * FROM PRODUCTOS WHERE PRODUCTO LIKE '"+nombre+" %' OR PRODUCTO LIKE '% "+nombre+" %' OR PRODUCTO LIKE '% "+nombre+"' ")
     data = cur.fetchall()#resultado de la busqueda en la base de datos
     return render_template("buscar.html", contactos=data, sumas=suma, total=total)
-
 
 
 
@@ -152,6 +153,7 @@ def aumentar(precio,i):
         flash("NO HAY SUFICIENTE STOCK!!!") #envia mesajes entre vistas
         return render_template("buscar.html", sumas=suma, total=total)
     else:
+        print(i)
         #multiplico cantidad vieja por precio y resto al total
         precioparcial=float(temp1[4])*float(precio)
         total=total-precioparcial
@@ -260,9 +262,20 @@ def elimclient(id):
     flash("cliente eliminado satifactoriamente") #envia mesajes entre vistas
     return redirect(url_for("index"))
 
+
+##########################################################################
+######################REDIRIGE A PANTALLA DE STOCK########################
+##########################################################################
+
+
 @app.route("/a_stock", methods=["POST"])
 def a_stock():
     return render_template("stock.html")
+
+
+##########################################################################
+######################BUSQUEDA POR NOMBRE PARPANTALLA STOCK###############
+##########################################################################
 
 
 @app.route("/buscarns", methods=["POST"])
@@ -274,7 +287,9 @@ def buscs():
     return render_template("stock.html", contactos=data)
 
 
-
+##########################################################################
+######################BUSQUEDA POR CODIGO PARPANTALLA STOCK###############
+##########################################################################
 
 @app.route("/buscarcs", methods= ["POST"])
 def busccods():
@@ -286,7 +301,9 @@ def busccods():
         return render_template("stock.html", contactos=data)
 
 
-
+##########################################################################
+######################CAMBIAR CANTIDAD EN STOCK DE UN ARTICULO############
+##########################################################################
 
 @app.route("/masstock/<codigo>", methods=["POST"])
 def aumentars(codigo):
@@ -306,7 +323,14 @@ def aumentars(codigo):
     return render_template("stock.html")
 
 
+    ##########################################################################
+    ######################CAMBIO DE PRECIO DE UN ARTICULO#####################
+    ##########################################################################
 
+
+##########################################################################
+######################CAMBIA PRECIO A UN ARTICULO#########################
+##########################################################################
 
 @app.route("/camprecio/<codigo>", methods=["POST"])
 def camprecio(codigo):
@@ -322,77 +346,11 @@ def camprecio(codigo):
     return render_template("stock.html")
 
 
-
-#def index():
-#    cur = mysql.connection.cursor()
-#    cur.execute("SELECT * FROM contacts")
-#    data = cur.fetchall()
-#    return render_template("index.html", contactos=data) #mando a renderizar una pagina html
-
-@app.route("/add_contact", methods=['POST'])
-def add_contact():
-    if request.method == "POST":
-        nombre = request.form["nombre"]
-        telefono = request.form["telefono"]
-        email = request.form["email"]
-        print(nombre)
-        print(email)
-        print(telefono)
-        cur = mysql.connection.cursor() #me conecto con la BDD
-        cur.execute("INSERT INTO contacts (nombre,telefono,email) VALUES (%s, %s, %s)", 
-        (nombre, telefono, email)) #hago la consulta SQL
-        mysql.connection.commit() #guardo los cambios
-        flash("contacto agregado satifactoriamente") #envia mesajes entre vistas
-        return redirect(url_for("index")) #hago que se vuelva a cargar index.html al agregar un contacto
-
-
-@app.route("/borrar/<string:id>")#recibo un parametro tipo string
-def borrar_contacto(id):
-    cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM contacts WHERE id = " + id )
-    mysql.connection.commit() #guardo los cambios
-    flash("contacto eliminado satifactoriamente") #envia mesajes entre vistas
-    return redirect(url_for("index"))
-
-
-
-@app.route("/editar/<id>")
-def agregar_contacto(id):
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM contacts WHERE ID = " + id )
-    data = cur.fetchall()
-    print(data[0])
-    flash("contacto editado satisfactoriamente") #envia mesajes entre vistas
-    return render_template("editar-contacto.html", contacto=data[0])
-
-
-@app.route("/actualizar/<id>", methods=["POST"])
-def act(id):
-    if request.method == "POST":
-        nombre = request.form["nombre"]
-        telefono = request.form["telefono"]
-        email = request.form["email"]
-        print(nombre)
-        print(email)
-        print(telefono)
-        cur = mysql.connection.cursor() #me conecto con la BDD
-        cur.execute("""
-                    UPDATE contacts
-                    SET nombre = %s,
-                    telefono = %s,
-                    email = %s
-                    WHERE id=%s
-        """,(nombre, telefono, email,id)) #hago la consulta SQL
-        mysql.connection.commit() #guardo los cambios
-        flash("contacto modificado satifactoriamente") #envia mesajes entre vistas
-        return redirect(url_for("index")) #hago que se vuelva a cargar index.html al agregar un contacto
-
-
+##########################################################################
+###############################AGREGA UN ARTICULO#########################
+##########################################################################
 
 
     
 if __name__ == "__main__":
     app.run(port = 3000, debug = True) #hacemos que se refresque solo
-
-
-    #flask usa un motor de plantilla, no es html puro, tiene otras cosillas

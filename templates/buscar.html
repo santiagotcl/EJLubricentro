@@ -15,6 +15,7 @@
     {% endfor %}
     {% endif %}
     {% endwith %}
+    {% set i=0 %} 
   
     <h1>USTED VA SELECCIONANDO</h1>
 
@@ -31,7 +32,7 @@
         </tr>
         </thead>
     <tbody>
-        {% set i=0 %}      
+             
         {% for sum in sumas %}
         
             <tr>
@@ -42,7 +43,7 @@
 
 
                 <td>
-                    <form action="/aumentar/{{sum.3}}/{{i}}" method="POST" class="input-group mb-2">
+                    <form action="/aumentar/{{sum.3}}/{{loop.index0}}" method="POST" class="input-group mb-2">
                         <div class="input-group-prepend">
                           <span class="input-group-text">{{sum.4}}</span>
                         </div>
@@ -51,7 +52,7 @@
                     </form>               
                 </td>
 
-            {% set i=i+1 %}
+            {% set i = i + 1 %}
 
 
                 <td>{{sum.3}}</td>
@@ -61,6 +62,7 @@
 
             
         {% endfor %}
+
                 <td>{{total}}</td>
             </tr>
         
