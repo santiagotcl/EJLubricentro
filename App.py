@@ -41,6 +41,9 @@ def busc():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM PRODUCTOS WHERE PRODUCTO LIKE '"+nombre+" %' OR PRODUCTO LIKE '% "+nombre+" %' OR PRODUCTO LIKE '% "+nombre+"' ")
     data = cur.fetchall()#resultado de la busqueda en la base de datos
+    if (len(data)==0):
+        cur.execute("SELECT * FROM PRODUCTOS WHERE PRODUCTO=%s",(nombre,))
+        data = cur.fetchall()#resultado de la busqueda en la base de datos
     return render_template("buscar.html", contactos=data, sumas=suma, total=total)
 
 
@@ -350,6 +353,23 @@ def camprecio(codigo):
 ###############################AGREGA UN ARTICULO#########################
 ##########################################################################
 
+@app.route("/Aarticulo")
+def Aarticulo():
+    return render_template("Aarticulo.html")
+
+@app.route("/add_product", methods=['POST'])
+def add_producto():
+    if request.method == "POST":
+        producto = request.form["producto"]
+        codigo = request.form["codigo"]
+        cantidad = request.form["cantidad"]
+        precio = request.form["precio"]
+        cur = mysql.connection.cursor() #me conecto con la BDD
+        cur.execute("INSERT INTO PRODUCTOS (PRODUCTO,CODIGO,CANTIDAD,PRECIO) VALUES (%s, %s, %s,%s)", 
+        (producto, codigo, cantidad, precio)) #hago la consulta SQL
+        mysql.connection.commit() #guardo los cambios
+        flash("Producto agregado satifactoriamente") #envia mesajes entre vistas
+        return redirect(url_for("Aarticulo")) #hago que se vuelva a cargar index.html al agregar un contacto
 
     
 if __name__ == "__main__":

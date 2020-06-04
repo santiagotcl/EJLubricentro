@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prueba flask</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+
+<body>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+        <p>{{message}}</p>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+        <form action="/add_product" method="POST">
+        
+            <div class="form-group" style="margin: 1rem;">
+                <label>Producto</label>
+                <input type="text" class="form-control" name="producto">
+            </div>
+
+            <div class="form-group" style="margin: 1rem;">
+                <label>codigo</label>
+                <input type="text" class="form-control" name="codigo">
+            </div>
+        
+            <div class="form-group" style="margin: 1rem;">
+                <label>Cantidad</label>
+                <input type="text" class="form-control" name="cantidad">
+            </div>
+        
+            <div class="form-group" style="margin: 1rem;">
+                <label>Precio</label>
+                <input type="text" class="form-control" name="precio">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin: 1rem;">Registrar Producto</button>
+          </form>
+
+          <a href="/"><button type="button" class="btn btn-primary" >Volver!</button></a>
+
+</body>
